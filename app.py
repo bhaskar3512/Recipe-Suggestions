@@ -6,15 +6,16 @@ import re
 
 app = Flask(__name__)
 
-# --- sample dataset (replace with real recipes dataset) ---
-data = [
-    {"id": 1, "title": "Tomato Omelette", "ingredients": ["egg", "tomato", "salt", "pepper", "oil"]},
-    {"id": 2, "title": "Tomato Soup", "ingredients": ["tomato", "water", "salt", "butter"]},
-    {"id": 3, "title": "Milkshake", "ingredients": ["milk", "sugar", "ice cream"]},
-    {"id": 4, "title": "Pancakes", "ingredients": ["flour", "milk", "egg", "salt", "sugar"]},
-    {"id": 5, "title": "Grilled Cheese", "ingredients": ["bread", "cheese", "butter"]},
-]
-recipes = pd.DataFrame(data)
+vectorizer = TfidfVectorizer()
+
+
+# Load CSV and convert ingredients string to list
+recipes = pd.read_csv("data.csv", converters={
+    "ingredients": lambda x: [i.strip() for i in x.split(",")]
+})
+
+print(recipes)
+
 
 def canonicalize(ing):
     return ing.lower().strip()
